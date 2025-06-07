@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -131,8 +130,15 @@
             font-size: 1.2rem;
             font-weight: 600;
             color: var(--primary-cyan);
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             letter-spacing: 3px;
+        }
+
+        .welcome-email {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
         }
 
         .welcome-description {
@@ -193,10 +199,20 @@
             box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
         }
 
+        .brand-info {
+            display: flex;
+            flex-direction: column;
+        }
+
         .brand-name {
             font-size: 1.5rem;
             font-weight: 700;
             color: var(--primary-cyan);
+        }
+
+        .brand-email {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
         }
 
         .main-content {
@@ -318,6 +334,7 @@
             box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
             width: 100%;
             max-width: 300px;
+            margin-bottom: 1rem;
         }
 
         .action-button:hover:not(:disabled) {
@@ -330,6 +347,41 @@
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
+        }
+
+        .rest-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .rest-button {
+            background: rgba(255, 193, 7, 0.2);
+            border: 2px solid var(--warning);
+            color: var(--warning);
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .rest-button:hover {
+            background: var(--warning);
+            color: var(--dark-bg);
+        }
+
+        .skip-button {
+            background: rgba(139, 92, 246, 0.2);
+            border: 2px solid var(--primary-purple);
+            color: var(--primary-purple);
+        }
+
+        .skip-button:hover {
+            background: var(--primary-purple);
+            color: white;
         }
 
         .navigation {
@@ -424,6 +476,15 @@
                 padding: 0.7rem 1rem;
                 font-size: 0.9rem;
             }
+
+            .rest-controls {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .brand-info {
+                display: none;
+            }
         }
 
         /* Loading and notification animations */
@@ -466,6 +527,7 @@
         <img src="/lovable-uploads/01c937dc-57db-4d40-93cd-751fc488dfa4.png" alt="Bici Ros Logo" class="logo-main">
         <h1 class="welcome-title">Bici Ros</h1>
         <h2 class="welcome-subtitle">CYCLING TRAINING GROUP</h2>
+        <div class="welcome-email">biciros@outlook.es</div>
         <p class="welcome-description">
             La rutina de fuerza basada en la ciencia para mejorar tu potencia, eficiencia y resistencia sobre la bicicleta. 
             Prepárate para completar tu entrenamiento en 1 hora.
@@ -477,7 +539,10 @@
     <div id="trainingScreen" class="training-screen hidden">
         <header class="header">
             <img src="/lovable-uploads/01c937dc-57db-4d40-93cd-751fc488dfa4.png" alt="Bici Ros" class="logo-small">
-            <span class="brand-name">Bici Ros</span>
+            <div class="brand-info">
+                <span class="brand-name">Bici Ros</span>
+                <span class="brand-email">biciros@outlook.es</span>
+            </div>
         </header>
 
         <main class="main-content">
@@ -489,7 +554,7 @@
 
             <div class="video-container">
                 <iframe id="exerciseVideo" 
-                        src="https://www.youtube.com/embed/In_S6j1yXgI?rel=0&modestbranding=1&playsinline=1" 
+                        src="https://www.youtube.com/embed/lmRIncjy39o?rel=0&modestbranding=1&playsinline=1" 
                         allowfullscreen>
                 </iframe>
             </div>
@@ -517,6 +582,14 @@
                 <button class="action-button" id="actionButton" onclick="handleActionButton()">
                     Completar Serie y Descansar
                 </button>
+                <div class="rest-controls hidden" id="restControls">
+                    <button class="rest-button skip-button" onclick="skipRest()">
+                        ⏭️ Saltar Descanso
+                    </button>
+                    <button class="rest-button" onclick="cancelRest()">
+                        ❌ Cancelar Descanso
+                    </button>
+                </div>
             </div>
         </main>
 
@@ -625,8 +698,12 @@
             // Resetear timer display
             updateTimerDisplay(ejercicio.descanso);
             
-            // Ocultar mensaje de completado
+            // Ocultar mensaje de completado y controles de descanso
             document.getElementById('completionMessage').classList.add('hidden');
+            document.getElementById('restControls').classList.add('hidden');
+            
+            // Resetear estado del temporizador
+            clearTimer();
         }
 
         function updateInfoContent() {
@@ -672,8 +749,8 @@
                 }
             } else {
                 // Iniciar siguiente serie
+                endRest();
                 serieActual++;
-                isResting = false;
                 updateDisplay();
                 updateActionButton();
             }
@@ -683,6 +760,9 @@
             const ejercicio = rutina[ejercicioActual];
             isResting = true;
             timeRemaining = ejercicio.descanso;
+            
+            // Mostrar controles de descanso
+            document.getElementById('restControls').classList.remove('hidden');
             
             updateActionButton();
             startTimer();
@@ -697,21 +777,28 @@
                 updateTimerDisplay(timeRemaining);
                 
                 if (timeRemaining <= 0) {
-                    clearInterval(timerInterval);
-                    timerDisplay.classList.remove('pulsing');
-                    endRest();
+                    endTimer();
                 }
             }, 1000);
         }
 
-        function updateTimerDisplay(seconds) {
-            const minutes = Math.floor(seconds / 60);
-            const remainingSeconds = seconds % 60;
-            const formattedTime = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-            document.getElementById('timerDisplay').textContent = formattedTime;
+        function clearTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            const timerDisplay = document.getElementById('timerDisplay');
+            timerDisplay.classList.remove('pulsing');
+            isResting = false;
+            document.getElementById('restControls').classList.add('hidden');
         }
 
-        function endRest() {
+        function endTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            const timerDisplay = document.getElementById('timerDisplay');
+            timerDisplay.classList.remove('pulsing');
+            
             // Reproducir sonido de notificación
             playNotificationSound();
             
@@ -723,6 +810,33 @@
             
             // Actualizar botón de acción
             updateActionButton();
+        }
+
+        function skipRest() {
+            if (isResting && timerInterval) {
+                clearTimer();
+                showNotification('Descanso saltado');
+                updateActionButton();
+            }
+        }
+
+        function cancelRest() {
+            if (isResting && timerInterval) {
+                clearTimer();
+                showNotification('Descanso cancelado');
+                updateActionButton();
+            }
+        }
+
+        function endRest() {
+            clearTimer();
+        }
+
+        function updateTimerDisplay(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            const formattedTime = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+            document.getElementById('timerDisplay').textContent = formattedTime;
         }
 
         function playNotificationSound() {
@@ -794,10 +908,9 @@
 
         function previousExercise() {
             if (ejercicioActual > 0) {
-                clearInterval(timerInterval);
+                clearTimer();
                 ejercicioActual--;
                 serieActual = 1;
-                isResting = false;
                 currentTab = 'evidence';
                 updateDisplay();
                 showTab('evidence');
@@ -806,10 +919,9 @@
 
         function nextExercise() {
             if (ejercicioActual < rutina.length - 1) {
-                clearInterval(timerInterval);
+                clearTimer();
                 ejercicioActual++;
                 serieActual = 1;
-                isResting = false;
                 currentTab = 'evidence';
                 updateDisplay();
                 showTab('evidence');
@@ -820,7 +932,7 @@
         }
 
         function finishTraining() {
-            clearInterval(timerInterval);
+            clearTimer();
             showNotification('¡Entrenamiento completado! ¡Excelente trabajo!');
             
             setTimeout(() => {
@@ -831,7 +943,6 @@
                 // Reset state
                 ejercicioActual = 0;
                 serieActual = 1;
-                isResting = false;
                 currentTab = 'evidence';
             }, 2000);
         }
