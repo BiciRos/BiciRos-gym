@@ -1,0 +1,861 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https:; img-src 'self' data: https:; media-src 'self' https:; frame-src https://www.youtube.com https://youtube.com;">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>Bici Ros - Cycling Training Group</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-cyan: #00ffff;
+            --primary-magenta: #ff00ff;
+            --primary-purple: #8b5cf6;
+            --dark-bg: #0f0f0f;
+            --dark-card: #1a1a1a;
+            --dark-border: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated gradient background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(0, 255, 255, 0.05) 0%, 
+                rgba(255, 0, 255, 0.05) 25%, 
+                rgba(139, 92, 246, 0.05) 50%, 
+                rgba(0, 255, 255, 0.05) 75%, 
+                rgba(255, 0, 255, 0.05) 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes timerPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 0, 255, 0.3); }
+            50% { transform: scale(1.02); box-shadow: 0 0 30px rgba(255, 0, 255, 0.6); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .slide-up {
+            animation: slideInUp 0.4s ease-out;
+        }
+
+        /* Welcome Screen */
+        .welcome-screen {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            background: radial-gradient(circle at center, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+        }
+
+        .logo-main {
+            width: 200px;
+            height: 200px;
+            margin-bottom: 2rem;
+            border-radius: 50%;
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.3);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .welcome-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-magenta), var(--primary-purple));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+        }
+
+        .welcome-subtitle {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-cyan);
+            margin-bottom: 2rem;
+            letter-spacing: 3px;
+        }
+
+        .welcome-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 600px;
+            margin-bottom: 3rem;
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, var(--primary-magenta), var(--primary-purple));
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255, 0, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .start-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 0, 255, 0.5);
+        }
+
+        /* Training Screen */
+        .training-screen {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 100px;
+        }
+
+        .header {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--dark-border);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-small {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+
+        .brand-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-cyan);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 100px 2rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .exercise-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .exercise-counter {
+            font-size: 1.2rem;
+            color: var(--primary-cyan);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .exercise-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--primary-purple));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .series-info {
+            font-size: 1.5rem;
+            color: var(--primary-magenta);
+            font-weight: 600;
+        }
+
+        .video-container {
+            margin: 2rem 0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 250px;
+            border: none;
+        }
+
+        .info-tabs {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .tab-button {
+            flex: 1;
+            background: rgba(26, 26, 26, 0.8);
+            border: 2px solid var(--dark-border);
+            color: var(--text-secondary);
+            padding: 1rem;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            border-color: var(--primary-cyan);
+            color: white;
+            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.3);
+        }
+
+        .info-content {
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid var(--dark-border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            backdrop-filter: blur(5px);
+        }
+
+        .timer-section {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: rgba(26, 26, 26, 0.9);
+            border-radius: 20px;
+            border: 1px solid var(--dark-border);
+        }
+
+        .timer-display {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary-magenta);
+            margin-bottom: 1rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .timer-display.pulsing {
+            animation: timerPulse 1s ease-in-out infinite;
+        }
+
+        .action-button {
+            background: linear-gradient(135deg, var(--success), var(--primary-cyan));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .action-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.5);
+        }
+
+        .action-button:disabled {
+            background: linear-gradient(135deg, #4a5568, #2d3748);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            border-top: 1px solid var(--dark-border);
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .nav-button {
+            background: rgba(139, 92, 246, 0.2);
+            border: 2px solid var(--primary-purple);
+            color: var(--text-primary);
+            padding: 0.8rem 1.5rem;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            flex: 1;
+            max-width: 200px;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            background: var(--primary-purple);
+            box-shadow: 0 5px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .nav-button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .completion-message {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(0, 255, 255, 0.2));
+            border: 2px solid var(--success);
+            border-radius: 20px;
+            margin: 2rem 0;
+        }
+
+        .completion-message h3 {
+            color: var(--success);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .welcome-title {
+                font-size: 2.5rem;
+            }
+
+            .welcome-subtitle {
+                font-size: 1rem;
+                letter-spacing: 2px;
+            }
+
+            .exercise-title {
+                font-size: 2rem;
+            }
+
+            .timer-display {
+                font-size: 2.5rem;
+            }
+
+            .video-container iframe {
+                height: 200px;
+            }
+
+            .main-content {
+                padding: 80px 1rem 1rem;
+            }
+
+            .info-tabs {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .navigation {
+                padding: 1rem;
+            }
+
+            .nav-button {
+                padding: 0.7rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Loading and notification animations */
+        .notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, var(--success), var(--primary-cyan));
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            z-index: 1000;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            animation: slideInUp 0.3s ease-out;
+        }
+
+        .flash-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 0, 255, 0.3);
+            z-index: 999;
+            animation: flash 0.5s ease-out;
+        }
+
+        @keyframes flash {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div id="welcomeScreen" class="welcome-screen fade-in">
+        <img src="/lovable-uploads/01c937dc-57db-4d40-93cd-751fc488dfa4.png" alt="Bici Ros Logo" class="logo-main">
+        <h1 class="welcome-title">Bici Ros</h1>
+        <h2 class="welcome-subtitle">CYCLING TRAINING GROUP</h2>
+        <p class="welcome-description">
+            La rutina de fuerza basada en la ciencia para mejorar tu potencia, eficiencia y resistencia sobre la bicicleta. 
+            Prepárate para completar tu entrenamiento en 1 hora.
+        </p>
+        <button class="start-button" onclick="startTraining()">Comenzar Rutina</button>
+    </div>
+
+    <!-- Training Screen -->
+    <div id="trainingScreen" class="training-screen hidden">
+        <header class="header">
+            <img src="/lovable-uploads/01c937dc-57db-4d40-93cd-751fc488dfa4.png" alt="Bici Ros" class="logo-small">
+            <span class="brand-name">Bici Ros</span>
+        </header>
+
+        <main class="main-content">
+            <div class="exercise-header">
+                <div class="exercise-counter" id="exerciseCounter">1/6</div>
+                <h3 class="exercise-title" id="exerciseTitle">Sentadilla Goblet</h3>
+                <div class="series-info" id="seriesInfo">Serie 1 de 4</div>
+            </div>
+
+            <div class="video-container">
+                <iframe id="exerciseVideo" 
+                        src="https://www.youtube.com/embed/In_S6j1yXgI?rel=0&modestbranding=1&playsinline=1" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+
+            <div class="info-tabs">
+                <button class="tab-button active" id="evidenceTab" onclick="showTab('evidence')">
+                    🔬 Evidencia
+                </button>
+                <button class="tab-button" id="tipsTab" onclick="showTab('tips')">
+                    💡 Consejos
+                </button>
+            </div>
+
+            <div class="info-content" id="infoContent">
+                Pilar fundamental para la fuerza del tren inferior. La ciencia demuestra que las sentadillas pesadas mejoran la economía de pedaleo hasta en un 5%, permitiéndote gastar menos energía a la misma potencia.
+            </div>
+
+            <div id="completionMessage" class="completion-message hidden">
+                <h3>¡Ejercicio Completado!</h3>
+                <p>Has terminado todas las series. ¡Excelente trabajo!</p>
+            </div>
+
+            <div class="timer-section">
+                <div class="timer-display" id="timerDisplay">02:00</div>
+                <button class="action-button" id="actionButton" onclick="handleActionButton()">
+                    Completar Serie y Descansar
+                </button>
+            </div>
+        </main>
+
+        <footer class="navigation">
+            <button class="nav-button" id="prevButton" onclick="previousExercise()" disabled>
+                ← Ejercicio Anterior
+            </button>
+            <button class="nav-button" id="nextButton" onclick="nextExercise()">
+                Siguiente Ejercicio →
+            </button>
+        </footer>
+    </div>
+
+    <script>
+        // Rutina de ejercicios
+        const rutina = [
+            {
+                nombre: "Sentadilla Goblet",
+                series: 4,
+                repeticiones: "5-6",
+                descanso: 180,
+                videoUrl: "https://www.youtube.com/embed/In_S6j1yXgI?rel=0&modestbranding=1&playsinline=1",
+                evidencia: "Pilar fundamental para la fuerza del tren inferior. La ciencia demuestra que las sentadillas pesadas mejoran la economía de pedaleo hasta en un 5%, permitiéndote gastar menos energía a la misma potencia.",
+                consejos: "Mantén la espalda recta, el pecho erguido y baja hasta que tus caderas superen la altura de las rodillas. El peso debe estar en todo el pie, no solo en la punta."
+            },
+            {
+                nombre: "Peso Muerto Rumano",
+                series: 3,
+                repeticiones: "6",
+                descanso: 120,
+                videoUrl: "https://www.youtube.com/embed/C2-g_o_f7s4?rel=0&modestbranding=1&playsinline=1",
+                evidencia: "Fortalece toda la cadena posterior (isquiotibiales y glúteos), crucial para la fase de tracción del pedaleo y para prevenir dolores de espalda baja.",
+                consejos: "Piensa en empujar la cadera hacia atrás, no en bajar el torso. Mantén una ligera flexión de rodillas y la barra siempre cerca de tus piernas."
+            },
+            {
+                nombre: "Sentadilla Búlgara",
+                series: 3,
+                repeticiones: "6 (por pierna)",
+                descanso: 90,
+                videoUrl: "https://www.youtube.com/embed/Q5f1E2I_iRI?rel=0&modestbranding=1&playsinline=1",
+                evidencia: "El trabajo unilateral corrige desequilibrios de fuerza entre las piernas, imitando la acción individual de cada pierna al pedalear y mejorando la estabilidad de la pelvis.",
+                consejos: "Asegúrate de que la rodilla delantera no sobrepase la punta del pie al bajar. Controla el movimiento en todo momento, especialmente la bajada (fase excéntrica)."
+            },
+            {
+                nombre: "Saltos al Cajón",
+                series: 3,
+                repeticiones: "5",
+                descanso: 90,
+                videoUrl: "https://www.youtube.com/embed/2p9cglxX_gA?rel=0&modestbranding=1&playsinline=1",
+                evidencia: "Entrena la potencia explosiva (Rate of Force Development). Esto se traduce directamente en una mayor capacidad de sprint y aceleración en subidas cortas y empinadas.",
+                consejos: "El objetivo es la explosividad, no la altura. Aterriza suavemente sobre el cajón como un 'ninja'. IMPORTANTE: Baja del cajón dando un paso atrás, NUNCA saltando hacia abajo."
+            },
+            {
+                nombre: "Plancha Frontal",
+                series: 3,
+                repeticiones: "45-60 seg",
+                descanso: 60,
+                videoUrl: "https://www.youtube.com/embed/dJlFk3sJ_sE?rel=0&modestbranding=1&playsinline=1",
+                evidencia: "Un core fuerte es la plataforma que transfiere la fuerza de las piernas a los pedales. La plancha mejora la rigidez del torso, evitando la pérdida de energía.",
+                consejos: "Aprieta los glúteos y el abdomen para mantener una línea recta desde los talones hasta la cabeza. Evita que la cadera se hunda o se eleve demasiado."
+            },
+            {
+                nombre: "Press Pallof",
+                series: 3,
+                repeticiones: "8 (por lado)",
+                descanso: 60,
+                videoUrl: "https://www.youtube.com/embed/NL4yF4_3i2A?rel=0&modestbranding=1&playsinline=1",
+                evidencia: "Ejercicio de anti-rotación. Crítico para la estabilidad sobre la bici, especialmente en MTB para controlar la dirección en terrenos irregulares y al pedalear de pie en carretera.",
+                consejos: "Mantén el core apretado y resiste el impulso de la goma de girar tu torso. El movimiento de los brazos debe ser lento y controlado."
+            }
+        ];
+
+        // Estado de la aplicación
+        let ejercicioActual = 0;
+        let serieActual = 1;
+        let currentTab = 'evidence';
+        let timerInterval = null;
+        let isResting = false;
+        let timeRemaining = 0;
+
+        // Funciones principales
+        function startTraining() {
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('trainingScreen').classList.remove('hidden');
+            document.getElementById('trainingScreen').classList.add('fade-in');
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            const ejercicio = rutina[ejercicioActual];
+            
+            // Actualizar información del ejercicio
+            document.getElementById('exerciseCounter').textContent = `${ejercicioActual + 1}/6`;
+            document.getElementById('exerciseTitle').textContent = ejercicio.nombre;
+            document.getElementById('seriesInfo').textContent = `Serie ${serieActual} de ${ejercicio.series}`;
+            
+            // Actualizar video
+            document.getElementById('exerciseVideo').src = ejercicio.videoUrl;
+            
+            // Actualizar contenido de información
+            updateInfoContent();
+            
+            // Actualizar botones de navegación
+            updateNavigationButtons();
+            
+            // Resetear timer display
+            updateTimerDisplay(ejercicio.descanso);
+            
+            // Ocultar mensaje de completado
+            document.getElementById('completionMessage').classList.add('hidden');
+        }
+
+        function updateInfoContent() {
+            const ejercicio = rutina[ejercicioActual];
+            const content = currentTab === 'evidence' ? ejercicio.evidencia : ejercicio.consejos;
+            document.getElementById('infoContent').textContent = content;
+        }
+
+        function showTab(tab) {
+            currentTab = tab;
+            
+            // Actualizar botones de tab
+            document.getElementById('evidenceTab').classList.toggle('active', tab === 'evidence');
+            document.getElementById('tipsTab').classList.toggle('active', tab === 'tips');
+            
+            // Actualizar contenido
+            updateInfoContent();
+        }
+
+        function updateNavigationButtons() {
+            const prevButton = document.getElementById('prevButton');
+            const nextButton = document.getElementById('nextButton');
+            
+            prevButton.disabled = ejercicioActual === 0;
+            
+            if (ejercicioActual === rutina.length - 1) {
+                nextButton.textContent = 'Finalizar Rutina';
+            } else {
+                nextButton.textContent = 'Siguiente Ejercicio →';
+            }
+        }
+
+        function handleActionButton() {
+            const ejercicio = rutina[ejercicioActual];
+            
+            if (!isResting) {
+                // Completar serie y iniciar descanso
+                if (serieActual < ejercicio.series) {
+                    startRest();
+                } else {
+                    // Ejercicio completado
+                    showCompletionMessage();
+                }
+            } else {
+                // Iniciar siguiente serie
+                serieActual++;
+                isResting = false;
+                updateDisplay();
+                updateActionButton();
+            }
+        }
+
+        function startRest() {
+            const ejercicio = rutina[ejercicioActual];
+            isResting = true;
+            timeRemaining = ejercicio.descanso;
+            
+            updateActionButton();
+            startTimer();
+        }
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timerDisplay');
+            timerDisplay.classList.add('pulsing');
+            
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay(timeRemaining);
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.classList.remove('pulsing');
+                    endRest();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            const formattedTime = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+            document.getElementById('timerDisplay').textContent = formattedTime;
+        }
+
+        function endRest() {
+            // Reproducir sonido de notificación
+            playNotificationSound();
+            
+            // Efecto visual de flash
+            showFlashEffect();
+            
+            // Mostrar notificación
+            showNotification('¡Descanso terminado!');
+            
+            // Actualizar botón de acción
+            updateActionButton();
+        }
+
+        function playNotificationSound() {
+            // Crear un contexto de audio y reproducir un beep
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.5);
+            } catch (e) {
+                console.log('Audio no disponible');
+            }
+        }
+
+        function showFlashEffect() {
+            const flash = document.createElement('div');
+            flash.className = 'flash-effect';
+            document.body.appendChild(flash);
+            
+            setTimeout(() => {
+                document.body.removeChild(flash);
+            }, 500);
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 2000);
+        }
+
+        function updateActionButton() {
+            const actionButton = document.getElementById('actionButton');
+            const ejercicio = rutina[ejercicioActual];
+            
+            if (isResting && timeRemaining > 0) {
+                actionButton.textContent = 'Descansando...';
+                actionButton.disabled = true;
+            } else if (isResting && timeRemaining <= 0) {
+                actionButton.textContent = 'Iniciar Siguiente Serie';
+                actionButton.disabled = false;
+            } else if (serieActual >= ejercicio.series) {
+                actionButton.textContent = 'Ejercicio Completado';
+                actionButton.disabled = true;
+            } else {
+                actionButton.textContent = 'Completar Serie y Descansar';
+                actionButton.disabled = false;
+            }
+        }
+
+        function showCompletionMessage() {
+            document.getElementById('completionMessage').classList.remove('hidden');
+            document.getElementById('completionMessage').classList.add('slide-up');
+            updateActionButton();
+        }
+
+        function previousExercise() {
+            if (ejercicioActual > 0) {
+                clearInterval(timerInterval);
+                ejercicioActual--;
+                serieActual = 1;
+                isResting = false;
+                currentTab = 'evidence';
+                updateDisplay();
+                showTab('evidence');
+            }
+        }
+
+        function nextExercise() {
+            if (ejercicioActual < rutina.length - 1) {
+                clearInterval(timerInterval);
+                ejercicioActual++;
+                serieActual = 1;
+                isResting = false;
+                currentTab = 'evidence';
+                updateDisplay();
+                showTab('evidence');
+            } else {
+                // Finalizar rutina
+                finishTraining();
+            }
+        }
+
+        function finishTraining() {
+            clearInterval(timerInterval);
+            showNotification('¡Entrenamiento completado! ¡Excelente trabajo!');
+            
+            setTimeout(() => {
+                document.getElementById('trainingScreen').classList.add('hidden');
+                document.getElementById('welcomeScreen').classList.remove('hidden');
+                document.getElementById('welcomeScreen').classList.add('fade-in');
+                
+                // Reset state
+                ejercicioActual = 0;
+                serieActual = 1;
+                isResting = false;
+                currentTab = 'evidence';
+            }, 2000);
+        }
+
+        // Prevenir zoom en dispositivos móviles
+        document.addEventListener('touchstart', function(event) {
+            if (event.touches.length > 1) {
+                event.preventDefault();
+            }
+        });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Bici Ros Cycling Trainer cargado correctamente');
+        });
+    </script>
+</body>
+</html>
