@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -149,24 +150,42 @@
             margin-bottom: 3rem;
         }
 
-        .start-button {
+        .routine-selection {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .routine-button {
             background: linear-gradient(135deg, var(--primary-magenta), var(--primary-purple));
             color: white;
             border: none;
-            padding: 1.2rem 3rem;
-            font-size: 1.3rem;
+            padding: 1.2rem 2.5rem;
+            font-size: 1.1rem;
             font-weight: 700;
-            border-radius: 50px;
+            border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 10px 30px rgba(255, 0, 255, 0.3);
             text-transform: uppercase;
             letter-spacing: 1px;
+            min-width: 200px;
         }
 
-        .start-button:hover {
+        .routine-button.trx {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
+        }
+
+        .routine-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 40px rgba(255, 0, 255, 0.5);
+        }
+
+        .routine-button.trx:hover {
+            box-shadow: 0 15px 40px rgba(0, 255, 255, 0.5);
         }
 
         /* Training Screen */
@@ -174,7 +193,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            padding-bottom: 100px;
+            padding-bottom: 120px;
         }
 
         .header {
@@ -249,6 +268,29 @@
             font-size: 1.5rem;
             color: var(--primary-magenta);
             font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .repetitions-info {
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid var(--primary-cyan);
+            border-radius: 15px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .repetitions-title {
+            font-size: 1.1rem;
+            color: var(--primary-cyan);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .repetitions-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-primary);
         }
 
         .video-container {
@@ -309,6 +351,28 @@
             border: 1px solid var(--dark-border);
         }
 
+        .rest-info {
+            background: rgba(255, 193, 7, 0.1);
+            border: 2px solid var(--warning);
+            border-radius: 15px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .rest-info-title {
+            font-size: 1rem;
+            color: var(--warning);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .rest-info-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
         .timer-display {
             font-size: 3rem;
             font-weight: 800;
@@ -325,16 +389,17 @@
             background: linear-gradient(135deg, var(--success), var(--primary-cyan));
             color: white;
             border: none;
-            padding: 1rem 2rem;
-            font-size: 1.2rem;
+            padding: 1.2rem 2rem;
+            font-size: 1.1rem;
             font-weight: 700;
             border-radius: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
             width: 100%;
-            max-width: 300px;
+            max-width: 350px;
             margin-bottom: 1rem;
+            line-height: 1.4;
         }
 
         .action-button:hover:not(:disabled) {
@@ -389,26 +454,28 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(26, 26, 26, 0.95);
+            background: rgba(26, 26, 26, 0.98);
             backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
+            padding: 1.2rem;
             border-top: 1px solid var(--dark-border);
             display: flex;
             justify-content: space-between;
             gap: 1rem;
+            z-index: 1000;
         }
 
         .nav-button {
             background: rgba(139, 92, 246, 0.2);
             border: 2px solid var(--primary-purple);
             color: var(--text-primary);
-            padding: 0.8rem 1.5rem;
+            padding: 1rem 1.5rem;
             border-radius: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 600;
             flex: 1;
-            max-width: 200px;
+            max-width: 180px;
+            font-size: 0.95rem;
         }
 
         .nav-button:hover:not(:disabled) {
@@ -434,6 +501,43 @@
             color: var(--success);
             font-size: 1.5rem;
             margin-bottom: 1rem;
+        }
+
+        .final-completion-message {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(0, 255, 255, 0.2));
+            border: 2px solid var(--success);
+            border-radius: 20px;
+            margin: 2rem 0;
+        }
+
+        .final-completion-message h3 {
+            color: var(--success);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .intervals-reminder {
+            background: rgba(255, 193, 7, 0.1);
+            border: 2px solid var(--warning);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .intervals-reminder-title {
+            color: var(--warning);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .intervals-reminder-text {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.5;
         }
 
         /* Responsive Design */
@@ -473,8 +577,9 @@
             }
 
             .nav-button {
-                padding: 0.7rem 1rem;
-                font-size: 0.9rem;
+                padding: 0.8rem 1rem;
+                font-size: 0.85rem;
+                max-width: none;
             }
 
             .rest-controls {
@@ -484,6 +589,15 @@
 
             .brand-info {
                 display: none;
+            }
+
+            .routine-selection {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .routine-button {
+                min-width: 250px;
             }
         }
 
@@ -529,10 +643,13 @@
         <h2 class="welcome-subtitle">CYCLING TRAINING GROUP</h2>
         <div class="welcome-email">biciros@outlook.es</div>
         <p class="welcome-description">
-            La rutina de fuerza basada en la ciencia para mejorar tu potencia, eficiencia y resistencia sobre la bicicleta. 
-            Prepárate para completar tu entrenamiento en 1 hora.
+            Rutinas de fuerza basadas en la ciencia para mejorar tu potencia, eficiencia y resistencia sobre la bicicleta. 
+            Elige tu rutina y prepárate para completar tu entrenamiento.
         </p>
-        <button class="start-button" onclick="startTraining()">Comenzar Rutina</button>
+        <div class="routine-selection">
+            <button class="routine-button" onclick="startTraining('fuerza')">Rutina de Fuerza</button>
+            <button class="routine-button trx" onclick="startTraining('trx')">Rutina TRX</button>
+        </div>
     </div>
 
     <!-- Training Screen -->
@@ -550,6 +667,11 @@
                 <div class="exercise-counter" id="exerciseCounter">1/6</div>
                 <h3 class="exercise-title" id="exerciseTitle">Sentadilla Goblet</h3>
                 <div class="series-info" id="seriesInfo">Serie 1 de 4</div>
+                
+                <div class="repetitions-info">
+                    <div class="repetitions-title">Repeticiones a realizar:</div>
+                    <div class="repetitions-value" id="repetitionsValue">5-6</div>
+                </div>
             </div>
 
             <div class="video-container">
@@ -577,10 +699,26 @@
                 <p>Has terminado todas las series. ¡Excelente trabajo!</p>
             </div>
 
+            <div id="finalCompletionMessage" class="final-completion-message hidden">
+                <h3>🎉 ¡Rutina Completada! 🎉</h3>
+                <p>¡Felicitaciones! Has completado toda la rutina de entrenamiento.</p>
+                <div class="intervals-reminder">
+                    <div class="intervals-reminder-title">📊 ¡No olvides registrar tu entrenamiento!</div>
+                    <div class="intervals-reminder-text">
+                        Anota esta sesión en <strong>intervals.icu</strong> para llevar un seguimiento de tu progreso y rendimiento.
+                    </div>
+                </div>
+            </div>
+
             <div class="timer-section">
-                <div class="timer-display" id="timerDisplay">02:00</div>
+                <div class="rest-info" id="restInfo">
+                    <div class="rest-info-title">Tiempo de descanso entre series:</div>
+                    <div class="rest-info-value" id="restInfoValue">3:00</div>
+                </div>
+                
+                <div class="timer-display" id="timerDisplay">03:00</div>
                 <button class="action-button" id="actionButton" onclick="handleActionButton()">
-                    Completar Serie y Descansar
+                    ✅ Serie Completada - Iniciar Descanso
                 </button>
                 <div class="rest-controls hidden" id="restControls">
                     <button class="rest-button skip-button" onclick="skipRest()">
@@ -595,17 +733,17 @@
 
         <footer class="navigation">
             <button class="nav-button" id="prevButton" onclick="previousExercise()" disabled>
-                ← Ejercicio Anterior
+                ← Anterior
             </button>
             <button class="nav-button" id="nextButton" onclick="nextExercise()">
-                Siguiente Ejercicio →
+                Siguiente →
             </button>
         </footer>
     </div>
 
     <script>
-        // Rutina de ejercicios con URLs actualizadas
-        const rutina = [
+        // Rutina de ejercicios de fuerza
+        const rutinaFuerza = [
             {
                 nombre: "Sentadilla Goblet",
                 series: 4,
@@ -662,6 +800,64 @@
             }
         ];
 
+        // Rutina TRX para ciclistas
+        const rutinaTRX = [
+            {
+                nombre: "Plancha TRX",
+                series: 3,
+                repeticiones: "30-45 seg",
+                descanso: 90,
+                videoUrl: "https://www.youtube.com/embed/cYvC5_1PkH4?rel=0&modestbranding=1&playsinline=1",
+                evidencia: "Un core fuerte es esencial para transferir eficientemente la potencia de las piernas a los pedales. La plancha TRX añade inestabilidad, activando más músculos estabilizadores del core.",
+                consejos: "Coloca los pies en los estribos del TRX y apóyate con los antebrazos o las manos. Mantén el cuerpo recto como una tabla, activando intensamente los glúteos y el abdomen para evitar que las caderas se hundan."
+            },
+            {
+                nombre: "Sentadilla TRX",
+                series: 3,
+                repeticiones: "10-12",
+                descanso: 90,
+                videoUrl: "https://www.youtube.com/embed/DTXphTGYd0g?rel=0&modestbranding=1&playsinline=1",
+                evidencia: "Trabaja los cuádriceps y glúteos, músculos principales para la potencia de pedaleo. El TRX permite realizar el ejercicio con una forma controlada y adaptable a diferentes niveles.",
+                consejos: "Sujeta las asas del TRX, inclínate ligeramente hacia atrás y baja las caderas como si fueras a sentarte en una silla. Mantén la espalda recta, el torso erguido y las rodillas alineadas con los pies."
+            },
+            {
+                nombre: "Curl de Isquiotibiales TRX",
+                series: 3,
+                repeticiones: "10-12",
+                descanso: 90,
+                videoUrl: "https://www.youtube.com/embed/RkEHyudfkyM?rel=0&modestbranding=1&playsinline=1",
+                evidencia: "Fortalece los isquiotibiales y los glúteos, músculos esenciales para la fase de tracción del pedaleo y para equilibrar la fuerza con los cuádriceps, previniendo desequilibrios musculares.",
+                consejos: "Acuéstate boca arriba, coloca los talones en los estribos del TRX. Eleva las caderas del suelo y flexiona las rodillas, llevando los talones hacia los glúteos. Mantén las caderas elevadas durante todo el movimiento."
+            },
+            {
+                nombre: "Remo TRX",
+                series: 3,
+                repeticiones: "10-12",
+                descanso: 90,
+                videoUrl: "https://www.youtube.com/embed/N_14s8zFOms?rel=0&modestbranding=1&playsinline=1",
+                evidencia: "Fortalece la espalda superior (dorsales, romboides, trapecio) y los bíceps, crucial para mantener una buena postura sobre la bicicleta, mejorar el control del manillar y reducir la fatiga en rutas largas.",
+                consejos: "De cara al punto de anclaje, inclínate hacia atrás manteniendo el cuerpo en línea recta. Tira del pecho hacia las manos, apretando los omóplatos y manteniendo los codos cerca del cuerpo."
+            },
+            {
+                nombre: "Press de Pecho TRX",
+                series: 3,
+                repeticiones: "10-12",
+                descanso: 90,
+                videoUrl: "https://www.youtube.com/embed/i_45-JMoXg4?rel=0&modestbranding=1&playsinline=1",
+                evidencia: "Trabaja los pectorales, tríceps y deltoides anteriores. Contribuye a la estabilidad del tronco y la capacidad de empuje, beneficioso para el manejo de la bicicleta y la prevención de la fatiga en la parte superior del cuerpo.",
+                consejos: "De espaldas al punto de anclaje, sujeta las asas e inclínate hacia adelante, formando una línea recta. Dobla los codos para bajar el pecho entre las manos y luego empuja para extender los brazos. Mantén el core activado."
+            },
+            {
+                nombre: "Sentadilla Búlgara TRX",
+                series: 3,
+                repeticiones: "8-10 (por pierna)",
+                descanso: 120,
+                videoUrl: "https://www.youtube.com/embed/A5MjNft73Ag?rel=0&modestbranding=1&playsinline=1",
+                evidencia: "Mejora la fuerza unilateral de las piernas y la estabilidad de la cadera, crucial para corregir desequilibrios musculares comunes en ciclistas y mejorar la eficiencia del pedaleo.",
+                consejos: "Coloca el empeine de un pie en el estribo del TRX detrás de ti. Baja la rodilla trasera hacia el suelo, concentrando el peso en la pierna delantera. Mantén el torso erguido y la rodilla delantera alineada con los dedos del pie."
+            }
+        ];
+
         // Estado de la aplicación
         let ejercicioActual = 0;
         let serieActual = 1;
@@ -669,9 +865,17 @@
         let timerInterval = null;
         let isResting = false;
         let timeRemaining = 0;
+        let rutina = rutinaFuerza; // Rutina por defecto
+        let currentRoutineType = 'fuerza';
 
         // Funciones principales
-        function startTraining() {
+        function startTraining(routineType) {
+            currentRoutineType = routineType;
+            rutina = routineType === 'trx' ? rutinaTRX : rutinaFuerza;
+            ejercicioActual = 0;
+            serieActual = 1;
+            currentTab = 'evidence';
+            
             document.getElementById('welcomeScreen').classList.add('hidden');
             document.getElementById('trainingScreen').classList.remove('hidden');
             document.getElementById('trainingScreen').classList.add('fade-in');
@@ -682,9 +886,16 @@
             const ejercicio = rutina[ejercicioActual];
             
             // Actualizar información del ejercicio
-            document.getElementById('exerciseCounter').textContent = `${ejercicioActual + 1}/6`;
+            document.getElementById('exerciseCounter').textContent = `${ejercicioActual + 1}/${rutina.length}`;
             document.getElementById('exerciseTitle').textContent = ejercicio.nombre;
             document.getElementById('seriesInfo').textContent = `Serie ${serieActual} de ${ejercicio.series}`;
+            document.getElementById('repetitionsValue').textContent = ejercicio.repeticiones;
+            
+            // Actualizar información de descanso
+            const restMinutes = Math.floor(ejercicio.descanso / 60);
+            const restSeconds = ejercicio.descanso % 60;
+            const restTime = restMinutes > 0 ? `${restMinutes}:${restSeconds.toString().padStart(2, '0')}` : `${ejercicio.descanso}s`;
+            document.getElementById('restInfoValue').textContent = restTime;
             
             // Actualizar video
             document.getElementById('exerciseVideo').src = ejercicio.videoUrl;
@@ -698,12 +909,14 @@
             // Resetear timer display
             updateTimerDisplay(ejercicio.descanso);
             
-            // Ocultar mensaje de completado y controles de descanso
+            // Ocultar mensajes de completado y controles de descanso
             document.getElementById('completionMessage').classList.add('hidden');
+            document.getElementById('finalCompletionMessage').classList.add('hidden');
             document.getElementById('restControls').classList.add('hidden');
             
             // Resetear estado del temporizador
             clearTimer();
+            updateActionButton();
         }
 
         function updateInfoContent() {
@@ -730,9 +943,9 @@
             prevButton.disabled = ejercicioActual === 0;
             
             if (ejercicioActual === rutina.length - 1) {
-                nextButton.textContent = 'Finalizar Rutina';
+                nextButton.textContent = 'Finalizar';
             } else {
-                nextButton.textContent = 'Siguiente Ejercicio →';
+                nextButton.textContent = 'Siguiente →';
             }
         }
 
@@ -752,7 +965,6 @@
                 endRest();
                 serieActual++;
                 updateDisplay();
-                updateActionButton();
             }
         }
 
@@ -839,6 +1051,97 @@
             document.getElementById('timerDisplay').textContent = formattedTime;
         }
 
+        function updateActionButton() {
+            const actionButton = document.getElementById('actionButton');
+            const ejercicio = rutina[ejercicioActual];
+            
+            if (isResting && timeRemaining > 0) {
+                actionButton.textContent = '⏰ Descansando... Espera o salta el descanso';
+                actionButton.disabled = true;
+            } else if (isResting && timeRemaining <= 0) {
+                actionButton.textContent = '🚀 ¡Descanso terminado! - Iniciar siguiente serie';
+                actionButton.disabled = false;
+            } else if (serieActual >= ejercicio.series) {
+                actionButton.textContent = '✅ Ejercicio completado';
+                actionButton.disabled = true;
+            } else {
+                actionButton.textContent = '✅ Serie Completada - Iniciar Descanso';
+                actionButton.disabled = false;
+            }
+        }
+
+        function showCompletionMessage() {
+            document.getElementById('completionMessage').classList.remove('hidden');
+            document.getElementById('completionMessage').classList.add('slide-up');
+            updateActionButton();
+        }
+
+        function previousExercise() {
+            if (ejercicioActual > 0) {
+                clearTimer();
+                ejercicioActual--;
+                serieActual = 1;
+                currentTab = 'evidence';
+                updateDisplay();
+                showTab('evidence');
+            }
+        }
+
+        function nextExercise() {
+            if (ejercicioActual < rutina.length - 1) {
+                clearTimer();
+                ejercicioActual++;
+                serieActual = 1;
+                currentTab = 'evidence';
+                updateDisplay();
+                showTab('evidence');
+            } else {
+                // Finalizar rutina
+                finishTraining();
+            }
+        }
+
+        function finishTraining() {
+            clearTimer();
+            
+            // Mostrar mensaje final de completación
+            document.getElementById('finalCompletionMessage').classList.remove('hidden');
+            document.getElementById('finalCompletionMessage').classList.add('slide-up');
+            
+            // Ocultar otros elementos
+            document.getElementById('completionMessage').classList.add('hidden');
+            document.getElementById('restControls').classList.add('hidden');
+            
+            // Actualizar botón de acción
+            const actionButton = document.getElementById('actionButton');
+            actionButton.textContent = '🏠 Volver al Inicio';
+            actionButton.disabled = false;
+            actionButton.onclick = function() {
+                returnToHome();
+            };
+            
+            showNotification('¡Entrenamiento completado! ¡Excelente trabajo!');
+        }
+
+        function returnToHome() {
+            document.getElementById('trainingScreen').classList.add('hidden');
+            document.getElementById('welcomeScreen').classList.remove('hidden');
+            document.getElementById('welcomeScreen').classList.add('fade-in');
+            
+            // Reset state
+            ejercicioActual = 0;
+            serieActual = 1;
+            currentTab = 'evidence';
+            rutina = rutinaFuerza;
+            currentRoutineType = 'fuerza';
+            
+            // Reset action button
+            const actionButton = document.getElementById('actionButton');
+            actionButton.onclick = function() {
+                handleActionButton();
+            };
+        }
+
         function playNotificationSound() {
             // Crear un contexto de audio y reproducir un beep
             try {
@@ -878,72 +1181,6 @@
             
             setTimeout(() => {
                 document.body.removeChild(notification);
-            }, 2000);
-        }
-
-        function updateActionButton() {
-            const actionButton = document.getElementById('actionButton');
-            const ejercicio = rutina[ejercicioActual];
-            
-            if (isResting && timeRemaining > 0) {
-                actionButton.textContent = 'Descansando...';
-                actionButton.disabled = true;
-            } else if (isResting && timeRemaining <= 0) {
-                actionButton.textContent = 'Iniciar Siguiente Serie';
-                actionButton.disabled = false;
-            } else if (serieActual >= ejercicio.series) {
-                actionButton.textContent = 'Ejercicio Completado';
-                actionButton.disabled = true;
-            } else {
-                actionButton.textContent = 'Completar Serie y Descansar';
-                actionButton.disabled = false;
-            }
-        }
-
-        function showCompletionMessage() {
-            document.getElementById('completionMessage').classList.remove('hidden');
-            document.getElementById('completionMessage').classList.add('slide-up');
-            updateActionButton();
-        }
-
-        function previousExercise() {
-            if (ejercicioActual > 0) {
-                clearTimer();
-                ejercicioActual--;
-                serieActual = 1;
-                currentTab = 'evidence';
-                updateDisplay();
-                showTab('evidence');
-            }
-        }
-
-        function nextExercise() {
-            if (ejercicioActual < rutina.length - 1) {
-                clearTimer();
-                ejercicioActual++;
-                serieActual = 1;
-                currentTab = 'evidence';
-                updateDisplay();
-                showTab('evidence');
-            } else {
-                // Finalizar rutina
-                finishTraining();
-            }
-        }
-
-        function finishTraining() {
-            clearTimer();
-            showNotification('¡Entrenamiento completado! ¡Excelente trabajo!');
-            
-            setTimeout(() => {
-                document.getElementById('trainingScreen').classList.add('hidden');
-                document.getElementById('welcomeScreen').classList.remove('hidden');
-                document.getElementById('welcomeScreen').classList.add('fade-in');
-                
-                // Reset state
-                ejercicioActual = 0;
-                serieActual = 1;
-                currentTab = 'evidence';
             }, 2000);
         }
 
