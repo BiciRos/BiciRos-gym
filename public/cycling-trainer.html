@@ -9,11 +9,12 @@
     <meta name="referrer" content="strict-origin-when-cross-origin">
     
     <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#0f0f0f">
+    <meta name="theme-color" content="#00ffff">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Bici Ros Training">
     <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/lovable-uploads/01c937dc-57db-4d40-93cd-751fc488dfa4.png">
     
     <title>Bici Ros - Cycling Training Group</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -654,6 +655,176 @@
             0%, 100% { opacity: 0; }
             50% { opacity: 1; }
         }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal {
+            background: var(--dark-card);
+            border: 2px solid var(--primary-cyan);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal h3 {
+            color: var(--primary-cyan);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .modal-button {
+            background: linear-gradient(135deg, var(--primary-magenta), var(--primary-purple));
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .modal-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 0, 255, 0.4);
+        }
+
+        .modal-button.secondary {
+            background: rgba(139, 92, 246, 0.2);
+            border: 2px solid var(--primary-purple);
+        }
+
+        /* Routine Switch Button */
+        .routine-switch {
+            position: fixed;
+            top: 80px;
+            right: 1rem;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.3);
+        }
+
+        .routine-switch:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.5);
+        }
+
+        /* Navigation in timer section */
+        .timer-navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .timer-nav-button {
+            background: rgba(139, 92, 246, 0.2);
+            border: 2px solid var(--primary-purple);
+            color: var(--text-primary);
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            flex: 1;
+            font-size: 0.9rem;
+            min-height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .timer-nav-button:hover:not(:disabled) {
+            background: var(--primary-purple);
+            box-shadow: 0 5px 20px rgba(139, 92, 246, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .timer-nav-button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Hide bottom navigation on training screen */
+        .training-screen .navigation {
+            display: none;
+        }
+
+        /* Install instructions */
+        .install-instructions {
+            background: rgba(26, 26, 26, 0.9);
+            border: 2px solid var(--primary-cyan);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            line-height: 1.6;
+        }
+
+        .install-instructions h4 {
+            color: var(--primary-cyan);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .install-step {
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: rgba(0, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .install-step strong {
+            color: var(--primary-magenta);
+        }
+
+        @media (max-width: 768px) {
+            .routine-switch {
+                top: 70px;
+                right: 0.5rem;
+                padding: 0.6rem 1rem;
+                font-size: 0.8rem;
+            }
+
+            .timer-navigation {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .timer-nav-button {
+                padding: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -671,6 +842,9 @@
             <button class="routine-button" onclick="startTraining('fuerza')">Rutina de Fuerza</button>
             <button class="routine-button trx" onclick="startTraining('trx')">Rutina TRX</button>
         </div>
+        <button class="routine-button" onclick="showInstallInstructions()" style="background: linear-gradient(135deg, #10b981, #059669); margin-top: 1rem;">
+            📱 ¿Cómo instalar en mi teléfono?
+        </button>
     </div>
 
     <!-- Training Screen -->
@@ -682,6 +856,10 @@
                 <span class="brand-email">biciros@outlook.es</span>
             </div>
         </header>
+
+        <button id="routineSwitch" class="routine-switch" onclick="switchRoutine()">
+            Cambiar a TRX
+        </button>
 
         <main class="main-content">
             <div class="exercise-header">
@@ -742,11 +920,21 @@
                     ✅ Serie Completada - Iniciar Descanso
                 </button>
                 <div class="rest-controls hidden" id="restControls">
-                    <button class="rest-button skip-button" onclick="skipRest()">
+                    <button class="rest-button skip-button" onclick="showSkipModal()">
                         ⏭️ Saltar Descanso
                     </button>
                     <button class="rest-button" onclick="cancelRest()">
                         ❌ Cancelar Descanso
+                    </button>
+                </div>
+
+                <!-- Navigation buttons moved here -->
+                <div class="timer-navigation">
+                    <button class="timer-nav-button" id="prevButtonTimer" onclick="previousExercise()" disabled>
+                        ← Anterior
+                    </button>
+                    <button class="timer-nav-button" id="nextButtonTimer" onclick="nextExercise()">
+                        Siguiente →
                     </button>
                 </div>
             </div>
@@ -760,6 +948,60 @@
                 Siguiente →
             </button>
         </footer>
+    </div>
+
+    <!-- Skip Modal -->
+    <div id="skipModal" class="modal-overlay hidden">
+        <div class="modal">
+            <h3>¿Qué quieres hacer?</h3>
+            <p>Puedes saltar solo el descanso o pasar directamente al siguiente ejercicio.</p>
+            <div class="modal-buttons">
+                <button class="modal-button" onclick="skipToNextSeries()">
+                    ⏭️ Saltar descanso y continuar serie
+                </button>
+                <button class="modal-button" onclick="skipToNextExercise()">
+                    🏃‍♂️ Pasar al siguiente ejercicio
+                </button>
+                <button class="modal-button secondary" onclick="closeSkipModal()">
+                    ❌ Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Install Instructions Modal -->
+    <div id="installModal" class="modal-overlay hidden">
+        <div class="modal">
+            <h3>📱 Instalar Bici Ros en tu teléfono</h3>
+            <div class="install-instructions">
+                <h4>📱 Android (Chrome/Edge)</h4>
+                <div class="install-step">
+                    <strong>1.</strong> Abre esta página en Chrome o Edge
+                </div>
+                <div class="install-step">
+                    <strong>2.</strong> Toca el menú (⋮) y selecciona "Instalar app" o "Añadir a pantalla de inicio"
+                </div>
+                
+                <h4 style="margin-top: 1.5rem;">🍎 iPhone/iPad (Safari)</h4>
+                <div class="install-step">
+                    <strong>1.</strong> Abre esta página en Safari
+                </div>
+                <div class="install-step">
+                    <strong>2.</strong> Toca el botón de compartir (⬆️)
+                </div>
+                <div class="install-step">
+                    <strong>3.</strong> Selecciona "Añadir a pantalla de inicio"
+                </div>
+                <div class="install-step">
+                    <strong>4.</strong> Toca "Añadir"
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-button" onclick="closeInstallModal()">
+                    ✅ Entendido
+                </button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -930,14 +1172,22 @@
             }
         }
 
-        // Bell sound function
+        function showInstallInstructions() {
+            document.getElementById('installModal').classList.remove('hidden');
+        }
+
+        function closeInstallModal() {
+            document.getElementById('installModal').classList.add('hidden');
+        }
+
+        // Bell sound function with higher volume
         function playBellSound() {
             try {
                 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 
-                // Create bell-like sound with multiple harmonics
+                // Create bell-like sound with multiple harmonics and higher volume
                 const frequencies = [800, 1000, 1200, 1600];
-                const duration = 1.5;
+                const duration = 2;
                 
                 frequencies.forEach((freq, index) => {
                     const oscillator = audioContext.createOscillator();
@@ -949,7 +1199,7 @@
                     oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
                     oscillator.type = 'sine';
                     
-                    const volume = 0.1 / (index + 1); // Decreasing volume for harmonics
+                    const volume = 0.3 / (index + 1); // Increased volume significantly
                     gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
                     gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
                     
@@ -968,6 +1218,10 @@
             ejercicioActual = 0;
             serieActual = 1;
             currentTab = 'evidence';
+            
+            // Update switch button text
+            const switchButton = document.getElementById('routineSwitch');
+            switchButton.textContent = routineType === 'fuerza' ? 'Cambiar a TRX' : 'Cambiar a Fuerza';
             
             document.getElementById('welcomeScreen').classList.add('hidden');
             document.getElementById('trainingScreen').classList.remove('hidden');
@@ -1104,17 +1358,28 @@
             const timerDisplay = document.getElementById('timerDisplay');
             timerDisplay.classList.remove('pulsing');
             
-            // Play bell sound instead of notification sound
+            // Play bell sound
             playBellSound();
             
-            // Efecto visual de flash
+            // Show flash effect
             showFlashEffect();
             
-            // Mostrar notificación
+            // Show notification
             showNotification('¡Descanso terminado!');
             
-            // Actualizar botón de acción
-            updateActionButton();
+            // Automatically advance to next series
+            setTimeout(() => {
+                if (serieActual < rutina[ejercicioActual].series) {
+                    serieActual++;
+                    updateDisplay();
+                    endRest();
+                    showNotification('Iniciando siguiente serie');
+                } else {
+                    // Exercise completed, show completion message
+                    showCompletionMessage();
+                    updateActionButton();
+                }
+            }, 1500);
         }
 
         function skipRest() {
@@ -1285,11 +1550,11 @@
         document.body.appendChild(modalOverlay);
 
         function showSkipModal() {
-            skipModal.classList.remove('hidden');
+            document.getElementById('skipModal').classList.remove('hidden');
         }
 
         function closeSkipModal() {
-            skipModal.classList.add('hidden');
+            document.getElementById('skipModal').classList.add('hidden');
         }
 
         function skipToNextSeries() {
@@ -1303,15 +1568,42 @@
 
         function skipToNextExercise() {
             closeSkipModal();
-            if (isResting && timerInterval) {
-                clearTimer();
-                nextExercise();
-                showNotification('Ejercicio saltado');
-            }
+            clearTimer();
+            nextExercise();
+            showNotification('Ejercicio saltado');
         }
 
-        function skipRest() {
-            showSkipModal();
+        // Routine switching function
+        function switchRoutine() {
+            const switchButton = document.getElementById('routineSwitch');
+            if (currentRoutineType === 'fuerza') {
+                currentRoutineType = 'trx';
+                rutina = rutinaTRX;
+                switchButton.textContent = 'Cambiar a Fuerza';
+            } else {
+                currentRoutineType = 'fuerza';
+                rutina = rutinaFuerza;
+                switchButton.textContent = 'Cambiar a TRX';
+            }
+            
+            // Reset to first exercise when switching
+            ejercicioActual = 0;
+            serieActual = 1;
+            currentTab = 'evidence';
+            updateDisplay();
+            showNotification(`Cambiado a rutina ${currentRoutineType === 'fuerza' ? 'de Fuerza' : 'TRX'}`);
+        }
+
+        // Service Worker Registration for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful');
+                    }, function(err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
         }
     </script>
 </body>
