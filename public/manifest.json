@@ -1,0 +1,27 @@
+
+{
+  "name": "Bici Ros - Cycling Training Group",
+  "short_name": "Bici Ros",
+  "description": "Rutinas de fuerza para ciclistas basadas en la ciencia",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f0f",
+  "theme_color": "#00ffff",
+  "orientation": "portrait",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/lovable-uploads/01c937dc-57db-4d40-93cd-751fc488dfa4.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/lovable-uploads/01c937dc-57db-4d40-93cd-751fc488dfa4.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["fitness", "sports", "health"],
+  "lang": "es"
+}
