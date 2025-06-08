@@ -1131,46 +1131,14 @@
         let rutina = rutinaFuerza; // Rutina por defecto
         let currentRoutineType = 'fuerza';
 
-        // PWA Installation
+        // PWA Installation - Simplified without automatic popup
         let deferredPrompt;
         
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            showInstallPrompt();
+            // Don't show automatic popup anymore
         });
-
-        function showInstallPrompt() {
-            const installBanner = document.createElement('div');
-            installBanner.innerHTML = `
-                <div style="position: fixed; top: 0; left: 0; right: 0; background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple)); color: white; padding: 1rem; text-align: center; z-index: 1001; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);">
-                    <span style="font-weight: 600;">📱 Instala Bici Ros como app en tu dispositivo</span>
-                    <button onclick="installApp()" style="background: white; color: var(--primary-purple); border: none; padding: 0.5rem 1rem; margin-left: 1rem; border-radius: 10px; font-weight: 600; cursor: pointer;">Instalar</button>
-                    <button onclick="dismissInstall()" style="background: transparent; color: white; border: 1px solid white; padding: 0.5rem 1rem; margin-left: 0.5rem; border-radius: 10px; cursor: pointer;">✕</button>
-                </div>
-            `;
-            document.body.appendChild(installBanner);
-            window.installBanner = installBanner;
-        }
-
-        function installApp() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted the install prompt');
-                    }
-                    deferredPrompt = null;
-                    dismissInstall();
-                });
-            }
-        }
-
-        function dismissInstall() {
-            if (window.installBanner) {
-                document.body.removeChild(window.installBanner);
-            }
-        }
 
         function showInstallInstructions() {
             document.getElementById('installModal').classList.remove('hidden');
