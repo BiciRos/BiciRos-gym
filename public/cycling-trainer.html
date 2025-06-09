@@ -654,6 +654,113 @@
             0%, 100% { opacity: 0; }
             50% { opacity: 1; }
         }
+
+        /* Installation Modal */
+        .install-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .install-modal-content {
+            background: var(--dark-card);
+            border: 2px solid var(--primary-cyan);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            margin: 1rem;
+            text-align: center;
+        }
+
+        .install-modal h3 {
+            color: var(--primary-cyan);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .install-instructions {
+            text-align: left;
+            margin: 1.5rem 0;
+            line-height: 1.6;
+        }
+
+        .install-instructions h4 {
+            color: var(--primary-magenta);
+            font-weight: 600;
+            margin: 1rem 0 0.5rem;
+        }
+
+        .install-instructions ol {
+            margin-left: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .install-instructions li {
+            margin-bottom: 0.5rem;
+        }
+
+        .install-button {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem 0.5rem 1rem;
+        }
+
+        .install-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.3);
+        }
+
+        .close-modal-button {
+            background: rgba(139, 92, 246, 0.2);
+            border: 2px solid var(--primary-purple);
+            color: var(--primary-purple);
+        }
+
+        .close-modal-button:hover {
+            background: var(--primary-purple);
+            color: white;
+        }
+
+        /* Routine Switcher */
+        .routine-switcher {
+            background: linear-gradient(135deg, var(--primary-magenta), var(--primary-purple));
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: auto;
+        }
+
+        .routine-switcher:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 0, 255, 0.4);
+        }
+
+        .routine-switcher.trx {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+        }
+
+        .routine-switcher.trx:hover {
+            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.4);
+        }
     </style>
 </head>
 <body>
@@ -671,6 +778,9 @@
             <button class="routine-button" onclick="startTraining('fuerza')">Rutina de Fuerza</button>
             <button class="routine-button trx" onclick="startTraining('trx')">Rutina TRX</button>
         </div>
+        <button class="install-button" onclick="showInstallModal()" style="margin-top: 2rem;">
+            📱 Instalar App en tu Móvil
+        </button>
     </div>
 
     <!-- Training Screen -->
@@ -681,6 +791,9 @@
                 <span class="brand-name">Bici Ros</span>
                 <span class="brand-email">biciros@outlook.es</span>
             </div>
+            <button class="routine-switcher" id="routineSwitcher" onclick="switchRoutine()">
+                Cambiar a TRX
+            </button>
         </header>
 
         <main class="main-content">
@@ -760,6 +873,37 @@
                 Siguiente →
             </button>
         </footer>
+    </div>
+
+    <!-- Install Modal -->
+    <div id="installModal" class="install-modal hidden">
+        <div class="install-modal-content">
+            <h3>📱 Instalar Bici Ros en tu Móvil</h3>
+            <div class="install-instructions">
+                <h4>🤖 Para Android (Chrome):</h4>
+                <ol>
+                    <li>Abre el menú de Chrome (⋮)</li>
+                    <li>Selecciona "Añadir a pantalla de inicio"</li>
+                    <li>Confirma la instalación</li>
+                </ol>
+
+                <h4>🍎 Para iPhone (Safari):</h4>
+                <ol>
+                    <li>Toca el botón de compartir (□↗)</li>
+                    <li>Selecciona "Añadir a pantalla de inicio"</li>
+                    <li>Confirma con "Añadir"</li>
+                </ol>
+
+                <h4>💻 Para otros navegadores:</h4>
+                <ol>
+                    <li>Busca la opción "Instalar app" en el menú</li>
+                    <li>O añade esta página a marcadores</li>
+                </ol>
+            </div>
+            <button class="install-button close-modal-button" onclick="closeInstallModal()">
+                Cerrar
+            </button>
+        </div>
     </div>
 
     <script>
@@ -1312,6 +1456,46 @@
 
         function skipRest() {
             showSkipModal();
+        }
+
+        // New functions for routine switching and install modal
+        function switchRoutine() {
+            const newRoutineType = currentRoutineType === 'fuerza' ? 'trx' : 'fuerza';
+            currentRoutineType = newRoutineType;
+            rutina = newRoutineType === 'trx' ? rutinaTRX : rutinaFuerza;
+            
+            // Reset to first exercise
+            ejercicioActual = 0;
+            serieActual = 1;
+            currentTab = 'evidence';
+            
+            // Update routine switcher button
+            updateRoutineSwitcherButton();
+            
+            // Update display
+            updateDisplay();
+            showTab('evidence');
+            
+            showNotification(`Cambiado a rutina ${newRoutineType === 'fuerza' ? 'de Fuerza' : 'TRX'}`);
+        }
+
+        function updateRoutineSwitcherButton() {
+            const switcher = document.getElementById('routineSwitcher');
+            if (currentRoutineType === 'fuerza') {
+                switcher.textContent = 'Cambiar a TRX';
+                switcher.className = 'routine-switcher';
+            } else {
+                switcher.textContent = 'Cambiar a Fuerza';
+                switcher.className = 'routine-switcher trx';
+            }
+        }
+
+        function showInstallModal() {
+            document.getElementById('installModal').classList.remove('hidden');
+        }
+
+        function closeInstallModal() {
+            document.getElementById('installModal').classList.add('hidden');
         }
     </script>
 </body>
